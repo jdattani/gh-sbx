@@ -6,6 +6,10 @@ on:
       - 'preprod/**'
       - 'feature/**'
     inputs:
+      environment:
+        description: 'Select environment'     
+        required: true
+        default: 'dev'
       folder:
         description: 'Input folder to copy e.g. folder1/folder2/folder3'
         required: true
@@ -13,6 +17,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     env:
       CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
       STORAGE_ACCOUNT_NAME: ${{ vars.STORAGE_ACCOUNT_NAME }}
