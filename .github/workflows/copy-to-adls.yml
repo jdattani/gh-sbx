@@ -1,0 +1,49 @@
+name: Copy To ADLS
+on:
+  workflow_dispatch:
+    branches:
+      - main
+      - 'preprod/**'
+      - 'feature/**'
+    inputs:
+      folder:
+        description: 'Input folder to copy e.g. folder1/folder2/folder3'
+        required: true
+        default: 'folder1'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
+      STORAGE_ACCOUNT_NAME: ${{ vars.STORAGE_ACCOUNT_NAME }}
+      DEST_FOLDER_PATH: dev/app1/${{ github.event.inputs.folder }}
+      SRC_FOLDER_PATH: ${{ github.event.inputs.folder }}
+    steps:
+      - name: Set variables
+        run: |
+          echo "Folder Input: ${{ github.event.inputs.folder }}"
+          echo "Storage Account Name: $STORAGE_ACCOUNT_NAME"
+          echo "Container Name: $CONTAINER_NAME"
+          echo "Dest Folder Path: $DEST_FOLDER_PATH"
+          echo "Source Folder Path: $SRC_FOLDER_PATH"
+          echo az storage blob upload-batch --destination "https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$CONTAINER_NAME" --destination-path $DEST_FOLDER_PATH --source "$SRC_FOLDER_PATH" --pattern "*"
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Copy folder to Azure Data Lake Storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch \
+            --destination "https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$CONTAINER_NAME" \
+            --destination-path $DEST_FOLDER_PATH \
+            --source "$SRC_FOLDER_PATH" \
+            --pattern "*" 
+      - name: Logout
+        run: |
+            az logout
+        if: always()
+
