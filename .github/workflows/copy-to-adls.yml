@@ -23,7 +23,7 @@ jobs:
       ENV_PREFIX: ${{ vars.ENV_PREFIX }}
       CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
       STORAGE_ACCOUNT_NAME: ${{ vars.STORAGE_ACCOUNT_NAME }}
-      DEST_FOLDER_PATH: dev/app1/${{ github.event.inputs.folder }}
+      DEST_FOLDER_PATH: app1/$ENV_PREFIX/${{ github.event.inputs.folder }}
       SRC_FOLDER_PATH: ${{ github.event.inputs.folder }}
     steps:
       - name: Set variables
@@ -31,7 +31,7 @@ jobs:
           echo "Folder Input: ${{ github.event.inputs.folder }}"
           echo "Storage Account Name: $STORAGE_ACCOUNT_NAME"
           echo "Container Name: $CONTAINER_NAME"
-          echo "Dest Folder Path: $ENV_PREFIX/$DEST_FOLDER_PATH"
+          echo "Dest Folder Path: $DEST_FOLDER_PATH"
           echo "Source Folder Path: $SRC_FOLDER_PATH"
           echo az storage blob upload-batch --destination "https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$CONTAINER_NAME" --destination-path $DEST_FOLDER_PATH --source "$SRC_FOLDER_PATH" --pattern "*"
       - name: Checkout code
@@ -46,7 +46,7 @@ jobs:
           inlineScript: |
             az storage blob upload-batch \
             --destination "https://$STORAGE_ACCOUNT_NAME.blob.core.windows.net/$CONTAINER_NAME" \
-            --destination-path "$ENV_PREFIX/$DEST_FOLDER_PATH" \
+            --destination-path $DEST_FOLDER_PATH \
             --source "$SRC_FOLDER_PATH" \
             --pattern "*" 
       - name: Logout
