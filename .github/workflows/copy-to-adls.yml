@@ -23,7 +23,7 @@ jobs:
       ENV_PREFIX: ${{ vars.ENV_PREFIX }}
       CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
       STORAGE_ACCOUNT_NAME: ${{ vars.STORAGE_ACCOUNT_NAME }}
-      DEST_FOLDER_PATH: app1/$ENV_PREFIX/${{ github.event.inputs.folder }}
+      DEST_FOLDER_PATH: app1/${{ vars.ENV_PREFIX }}/${{ github.event.inputs.folder }}
       SRC_FOLDER_PATH: ${{ github.event.inputs.folder }}
     steps:
       - name: Set variables
@@ -40,7 +40,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Copy folder to Azure Data Lake Storage
+      - name: Copy folder to ADLS
         uses: azure/CLI@v1
         with:
           inlineScript: |
