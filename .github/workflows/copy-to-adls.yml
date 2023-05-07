@@ -47,8 +47,7 @@ jobs:
             --destination-path $DEST_FOLDER_PATH \
             --source "$SRC_FOLDER_PATH" \
             --pattern "*" \
-            --overwrite \
-            --dryrun
+            --overwrite
       - name: Copy folder to ADLS
         uses: azure/CLI@v1
         with:
@@ -59,8 +58,7 @@ jobs:
             --destination-path $DEST_FOLDER_PATH \
             --source-account-name $STG_STORAGE_ACCOUNT_NAME \
             --source-container $CONTAINER_NAME \
-            --pattern "$DEST_FOLDER_PATH/*" \
-            --dryrun
+            --pattern "$DEST_FOLDER_PATH/*"
       - name: Logout
         run: |
             az logout
