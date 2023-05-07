@@ -31,7 +31,7 @@ jobs:
           echo "Dest Folder Path: $DEST_FOLDER_PATH"
           echo "Source Folder Path: $SRC_FOLDER_PATH"
           echo az storage blob upload-batch --destination "https://$STG_STORAGE_ACCOUNT_NAME.blob.core.windows.net/$CONTAINER_NAME" --destination-path $DEST_FOLDER_PATH --source "$SRC_FOLDER_PATH" --pattern "*"
-          echo az storage blob copy start-batch --account-name $STORAGE_ACCOUNT_NAME --destination-container $CONTAINER_NAME --destination-path $DEST_FOLDER_PATH --source-account-name $STG_STORAGE_ACCOUNT_NAME --source-container $CONTAINER_NAME --pattern $DEST_FOLDER_PATH/*
+          echo az storage blob copy start-batch --account-name $STORAGE_ACCOUNT_NAME --destination-container $CONTAINER_NAME --destination-path $DEST_FOLDER_PATH --source-account-name $STG_STORAGE_ACCOUNT_NAME --source-container $CONTAINER_NAME --pattern "$DEST_FOLDER_PATH/*"
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Login to Azure
@@ -57,7 +57,7 @@ jobs:
             --destination-path $DEST_FOLDER_PATH \
             --source-account-name $STG_STORAGE_ACCOUNT_NAME \
             --source-container $CONTAINER_NAME \
-            --pattern $DEST_FOLDER_PATH/*
+            --pattern "$DEST_FOLDER_PATH/*"
       - name: Logout
         run: |
             az logout
