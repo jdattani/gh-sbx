@@ -54,8 +54,9 @@ jobs:
             --account-name $STORAGE_ACCOUNT_NAME \
             --destination-container $CONTAINER_NAME \
             --destination-path $DEST_FOLDER_PATH \
-            --source-uri https://$STG_STORAGE_ACCOUNT_NAME.blob.core.windows.net/$CONTAINER_NAME/$DEST_FOLDER_PATH
-            --pattern "*"
+            --source-account-name $STG_STORAGE_ACCOUNT_NAME \
+            --source-container $CONTAINER_NAME \
+            --pattern $DEST_FOLDER_PATH/*
       - name: Logout
         run: |
             az logout
