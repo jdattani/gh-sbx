@@ -47,7 +47,8 @@ jobs:
             --destination-path $DEST_FOLDER_PATH \
             --source "$SRC_FOLDER_PATH" \
             --pattern "*" \
-            --overwrite
+            --overwrite \
+            --dryrun
       - name: Copy folder to ADLS
         uses: azure/CLI@v1
         with:
