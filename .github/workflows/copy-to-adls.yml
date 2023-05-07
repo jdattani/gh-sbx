@@ -58,6 +58,7 @@ jobs:
             --source-account-name $STG_STORAGE_ACCOUNT_NAME \
             --source-container $CONTAINER_NAME \
             --pattern "$DEST_FOLDER_PATH/*"
+            --dryrun
       - name: Logout
         run: |
             az logout
