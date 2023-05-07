@@ -58,7 +58,7 @@ jobs:
             --destination-path $DEST_FOLDER_PATH \
             --source-account-name $STG_STORAGE_ACCOUNT_NAME \
             --source-container $CONTAINER_NAME \
-            --pattern "$DEST_FOLDER_PATH/*"
+            --pattern "$DEST_FOLDER_PATH/*" \
             --dryrun
       - name: Logout
         run: |
