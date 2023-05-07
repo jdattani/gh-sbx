@@ -1,10 +1,6 @@
 name: Copy To ADLS
 on:
   workflow_dispatch:
-    branches:
-      - main
-      - 'preprod/**'
-      - 'feature/**'
     inputs:
       environment:
         type: environment
@@ -41,7 +37,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Copy folder to ADLS
+      - name: Copy folder to ADLS stage
         uses: azure/CLI@v1
         with:
           inlineScript: |
@@ -50,6 +46,19 @@ jobs:
             --destination-path $DEST_FOLDER_PATH \
             --source "$SRC_FOLDER_PATH" \
             --pattern "*" 
+      - name: Copy folder to ADLS
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob copy start-batch \
+            --account-name $STORAGE_ACCOUNT_NAME \
+            --destination-container $CONTAINER_NAME \
+            --destination-path $DEST_FOLDER_PATH \
+            --source-account-name $STG_STORAGE_ACCOUNT_NAME \
+            --source-container $CONTAINER_NAME \
+            --source-path $DEST_FOLDER_PATH \
+            --pattern "*"
+
       - name: Logout
         run: |
             az logout
